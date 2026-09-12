@@ -32,9 +32,8 @@ jobs:
 
       - name: Run lint
         run: pipenv run lint
-      
 
-    test:
+  test:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -58,7 +57,7 @@ jobs:
       - name: Run tests
         run: pipenv run test
 
-    build:
+  build:
     runs-on: ubuntu-latest
     needs:
       - lint
@@ -82,7 +81,6 @@ jobs:
       - name: Install dependencies
         run: pipenv install --dev
 
-     
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -102,7 +100,7 @@ jobs:
         run: |
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/backend:${{ github.sha }}
 
-    deploy:
+  deploy:
     runs-on: ubuntu-latest
     needs:
       - build
@@ -123,8 +121,9 @@ jobs:
         run: |
           aws eks update-kubeconfig \
             --region ${{ secrets.AWS_REGION }} \
-            --name ${{ secrets.AWS_EKS_CLUSTER_NAME }}    
-          - name: Set backend image
+            --name ${{ secrets.AWS_EKS_CLUSTER_NAME }}
+
+      - name: Set backend image
         run: |
           cd starter/backend/k8s
           kustomize edit set image backend=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/backend:${{ github.sha }}
