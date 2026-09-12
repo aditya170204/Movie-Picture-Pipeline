@@ -4,7 +4,7 @@ import axios from 'axios';
 function MovieDetail({ movie }) {
   const [details, setDetails] = useState(null);
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_MOVIE_API_URL}/movies/${movie.id}`).then((response) => {
+    axios.get(`http://a763b03932b31428c9d9ce354118feda-2091843276.us-east-1.elb.amazonaws.com/movies/${movie.id}`).then((response) => {
       setDetails(response.data);
     });
   }, [movie]);
