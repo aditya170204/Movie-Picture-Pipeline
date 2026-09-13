@@ -80,3 +80,7 @@ jobs:
 
       - name: Build application
         run: npm run build
+        
+      # Ye Docker build step missing tha, jo add kar diya hai
+      - name: Build Docker Image
+        run: docker build -t frontend-image .
